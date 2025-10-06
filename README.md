@@ -5,26 +5,9 @@
 
 ## Project Description
 
-The goal of this project is to have my own interactive digitalized calendar for family planing using a touch screen.
+The goal of this project is to have your own application for family members activities planing through the week or the entire month.
 
-This repository is based on my final capstone project for the “Cloud Developer 2023” program (YH-Utbildning). With the main focus being the deployment strategy using Terraform and Kubernetes. The solution is split into multiple subprojects/modules that together form a hybrid-based, full-stack application.  
+This repository is based on my final capstone project for the “Cloud Developer 2023” program (YH-Utbildning). With the main focus being the deployment strategy using Terraform and Kubernetes. You will be able to implement the deployment on Azure Kubernetes Services (AKS).
 
-For now the project is a simple monolithic .Net MVC application designed to use a local PostgreSQL database.
+For now the project is a simple monolithic .Net MVC application designed to use a local PostgreSQL database, this will be changed in the near future. 
 
-## Prerequisites
-Before running this project, you will need the following installed:
-
-  - .NET SDK (for the C# API)
-  - Git
-  - Terraform CLI
-  - Cloud Provider account (e.g., Azure, AWS, CGP) and its respective CLI. 
-  - kubectl 
-
-## Quickstart 
-
-Try deploying the application on Azure Kubernetes Services (AKS). Assuming that you fullfiled the prerequisites. Make sure that you are logged in through the CLI. 
-
-  ```
-  cd 
-  az login --tenant <YOUR_ID_HERE>
-  ```
