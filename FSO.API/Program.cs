@@ -9,6 +9,7 @@ using System;
 using FSO.API.Controllers;
 using Microsoft.IdentityModel.Tokens;
 using System.Diagnostics;
+using FSO.API.Data;
 
 
 var builder = WebApplication.CreateBuilder(args);
