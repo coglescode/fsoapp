@@ -8,7 +8,7 @@ on:
   push:
     branches: [ "dev" ]
   pull_request:
-    branches: [ "main" ]
+     branches: [ "main" ]
   
 
 jobs:
@@ -25,8 +25,8 @@ jobs:
     # - name: Display version
     #   run: dotnet --version    
     - name: Restore dependencies
-      run: dotnet restore
+      run: dotnet FSO.App/ restore
     - name: Build
-      run: dotnet build --no-restore
+      run: dotnet build FSO.App/ --no-restore
     - name: Test
-      run: dotnet test --no-build --verbosity normal
+      run: dotnet test FSO.App/ --no-build --verbosity normal
