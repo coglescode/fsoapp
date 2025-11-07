@@ -1,0 +1,64 @@
+@model IEnumerable<FSO.Client.Models.MemberViewModel>
+
+<h2>Members</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            @* <th>Id</th> *@
+            <th>Name</th>
+            <th>Lastname</th>
+            
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var member in Model)
+        {
+            @if (member == null)
+            {
+                <tr>
+                    <td colspan="3">No Members Found</td>
+                </tr>
+            }
+            else
+            {
+                <tr>
+                    @* <td>@member.Id</td> *@
+                    <td>@member.Name</td>
+                    <td>@member.Lastname</td>
+
+                    <td>
+                        <a asp-action="PutMember" asp-controller="Members" asp-route-id="@member.Id" class="btn btn-primary">Edit</a>
+                        <a asp-action="DeleteMember" asp-controller="Members" asp-route-id="@member.Id" class="btn btn-danger">Delete</a>
+                    </td>
+                </tr>               
+            }            
+        }
+       
+        
+    </tbody> 
+</table>
+
+
+<form asp-controller="Members" asp-action="PostMember" method="post">
+    <!-- Input and Submit elements -->
+    @* <input type="text" name="Id" class="form" /> *@
+    <label for="Name">Name</label>
+    <input type="text" name="Name" class="form" />
+    <label for="Lastname">Lastname</label>
+    <input type="text" name="Lastname" class="form" />
+    <button class="btn btn-success" type="submit">Create New</button>
+</form>
+
+@* 
+@foreach (var member in Model ) {
+
+    <form asp-controller="Members" asp-action="PostMember" method="put">
+        <label for="Name">Name</label>
+        <input type="text" name="Name"  value="@member.Name" class="form" />
+        <label for="Lastname">Lastname</label>
+        <input type="text" name="Lastname" value="@member.Lastname" class="form" />
+        <button class="btn btn-success" type="submit">Create New</button>
+    </form>
+}
+ *@
