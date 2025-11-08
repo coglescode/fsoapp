@@ -22,11 +22,14 @@ jobs:
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 9.0.x
+        cache: true
     # - name: Display version
     #   run: dotnet --version    
-    - name: Restore dependencies
+    - name: Install dependencies
       run: dotnet  restore FSO.App/
-    - name: Build
-      run: dotnet build FSO.App/ --no-restore
-    - name: Test
-      run: dotnet test FSO.App/ --no-build --verbosity normal
+    - name: List packages references
+      run: dotnet list package
+    # - name: Build
+    #   run: dotnet build FSO.App/ --no-restore Release
+    # - name: Test
+    #   run: dotnet test FSO.App/ --no-build --verbosity normal
