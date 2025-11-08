@@ -26,7 +26,7 @@ jobs:
     # - name: Display version
     #   run: dotnet --version    
     - name: Install dependencies
-      run: dotnet  restore FSO.App/
+      run: dotnet restore Capstone.sln
     - name: List packages references
       run: dotnet list package
     # - name: Build
