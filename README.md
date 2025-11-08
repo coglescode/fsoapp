@@ -1,5 +1,7 @@
 # 🚀 FSOApp
 
+[![FSO.App CI/CD](https://github.com/coglescode/fsoapp/actions/workflows/dotnet.yml/badge.svg?branch=dev)](https://github.com/coglescode/fsoapp/actions/workflows/dotnet.yml)
+
 **Last project for YH-Utbildning Cloud Developer 2023**
 
 
