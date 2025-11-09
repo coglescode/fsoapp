@@ -28,6 +28,6 @@ jobs:
     - name: Install dependencies
       run: dotnet restore Capstone.sln
     - name: Build
-      run: dotnet build FSO.App/ --no-restore Release
+      run: dotnet build FSO.App/ --no-restore
     # - name: Test
     #   run: dotnet test FSO.App/ --no-build --verbosity normal
