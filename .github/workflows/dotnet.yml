@@ -27,9 +27,7 @@ jobs:
     #   run: dotnet --version    
     - name: Install dependencies
       run: dotnet restore Capstone.sln
-    - name: List packages references
-      run: dotnet list package
-    # - name: Build
-    #   run: dotnet build FSO.App/ --no-restore Release
+    - name: Build
+      run: dotnet build FSO.App/ --no-restore Release
     # - name: Test
     #   run: dotnet test FSO.App/ --no-build --verbosity normal
