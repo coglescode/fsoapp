@@ -22,10 +22,10 @@ jobs:
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 9.0.x
-        cache: true
-    # - name: Install dependencies
-    #   run: dotnet restore Capstone.sln
-    # - name: Build
-    #   run: dotnet build FSO.App/ --no-restore
-    # - name: Test
-    #   run: dotnet test FSO.App/ --no-build --verbosity normal
+        # cache: true
+    - name: Install dependencies
+      run: dotnet restore Capstone.sln
+    - name: Build
+      run: dotnet build FSO.App/ --no-restore
+    - name: Test
+      run: dotnet test FSO.App/ --no-build --verbosity normal
