@@ -12,7 +12,7 @@
     <InvariantGlobalization>true</InvariantGlobalization>
     
     <ContainerRepository>coglescode/fso-app</ContainerRepository>
-    <ContainerImageTag>latest</ContainerImageTag>
+    <ContainerImageTag>dev</ContainerImageTag>
     <UserSecretsId>0f53634c-3876-4ec0-8c1d-9056b6fedb24</UserSecretsId>
     <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
     
