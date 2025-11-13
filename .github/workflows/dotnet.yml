@@ -5,10 +5,10 @@ name: FSO.App CI/CD
 
 on:
   workflow_dispatch:  
-  # push:
-  #   branches: [ "dev" ]
-  # pull_request:
-  #    branches: [ "main" ]
+  push:
+    branches: [ "dev" ]
+  pull_request:
+     branches: [ "main" ]
   
 
 jobs:
