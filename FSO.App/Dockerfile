@@ -15,7 +15,7 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["FSO.App.csproj", "."]
 RUN dotnet restore "FSO.App.csproj"
-RUN dotnet tool install --global dotnet-ef --version 9.0.*
+#RUN dotnet tool install --global dotnet-ef --version 9.0.*
 COPY . .
 WORKDIR "/src/"
 RUN dotnet build "FSO.App.csproj" -c $BUILD_CONFIGURATION -o /app/build
