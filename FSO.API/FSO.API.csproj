@@ -15,23 +15,9 @@
     <ContainerRepository>coglescode/fso-api</ContainerRepository>
     <ContainerImageTag>latest</ContainerImageTag>
     <ContainerFamily>alpine</ContainerFamily>
-    <!-- 
-      LocalRegistry>docker</LocalRegistry 
-      DockerfileBuildArguments>-t contoso/front-end:v2.0</DockerfileBuildArguments 
-      <IsPublishable>true</IsPublishable>    
-    -->
-
-
-    
-    
-    
+   
         
     <InvariantGlobalization>false</InvariantGlobalization>
-
-
-    
-    
-    
         
     <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>  
     
@@ -62,8 +48,7 @@
     <PackageReference Include="Ulid" Version="1.4.1" />
 
     <ContainerPort Include="8080" Type="tcp" />
-    
-    <!--ContainerEnvironmentVariable Include="ConnectionString" Value="$(ConnectionString)" /-->
+        
   </ItemGroup>
 
   <ItemGroup>
