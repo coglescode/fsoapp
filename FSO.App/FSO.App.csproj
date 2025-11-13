@@ -4,19 +4,18 @@
     <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+		<UserSecretsId>0f53634c-3876-4ec0-8c1d-9056b6fedb24</UserSecretsId>
+		<InvariantGlobalization>true</InvariantGlobalization>
+
     <EnableSdkContainerDebugging>True</EnableSdkContainerDebugging>
     <ContainerBaseImage>mcr.microsoft.com/dotnet/aspnet:9.0</ContainerBaseImage>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <ContainerFamily>alpine</ContainerFamily>
-    <ContainerRegistry>docker.io</ContainerRegistry>
-    <InvariantGlobalization>true</InvariantGlobalization>
-    
+    <ContainerRegistry>docker.io</ContainerRegistry>    
     <ContainerRepository>coglescode/fso-app</ContainerRepository>
     <ContainerImageTag>dev</ContainerImageTag>
-    <UserSecretsId>0f53634c-3876-4ec0-8c1d-9056b6fedb24</UserSecretsId>
-    <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
     
-    
+    <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>   
    
   </PropertyGroup>
   
