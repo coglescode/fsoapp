@@ -13,7 +13,7 @@ EXPOSE 8081
 FROM mcr.microsoft.com/dotnet/sdk:9.0-alpine AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["./FSO.App.csproj", "."]
+COPY ["FSO.App.csproj", "."]
 RUN dotnet restore "FSO.App.csproj"
 
 COPY . .
