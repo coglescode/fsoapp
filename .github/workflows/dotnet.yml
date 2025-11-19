@@ -47,7 +47,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ secrets.DOCKER_USERNAME }}/fso-app
+          images: ${{ vars.DOCKER_USERNAME }}/fso-app
 
       - name: Log in to your Docker Hub account
         uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
