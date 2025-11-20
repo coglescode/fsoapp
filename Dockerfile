@@ -1,36 +1,53 @@
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS base
-# Path relative to the root directory of the container's file system.
-WORKDIR /app 
-EXPOSE 8080
-#EXPOSE 443
+# See https://aka.ms/customizecontainer to learn how to customize your debug container and how Visual Studio uses this Dockerfile to build your images for faster debugging.
 
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
-WORKDIR /src 
-COPY Capstone.sln ./ 
-COPY FSO.Client/FSO.Client.csproj FSO.Client/
-COPY FSO.API/FSO.API.csproj FSO.API/
-#RUN dotnet nuget locals all --clear
-RUN dotnet restore FSO.Client/FSO.Client.csproj
-
-
-# Build and publish a release
-# w WORKDIR /src/FSO.Client
-WORKDIR /src
-COPY . .
-
-RUN dotnet build FSO.Client/FSO.Client.csproj -c Release -o /app/build
-RUN dotnet build FSO.API/FSO.API.csproj -c Release -o /app/build
-
-
-FROM build AS publish
-RUN dotnet publish FSO.Client/FSO.Client.csproj -c Release -o /app/publish
-RUN dotnet publish FSO.API/FSO.API.csproj -c Release -o /app/publish
-
-
-# Build runtime image
-FROM base AS final
+# This stage is used when running from VS in fast mode (Default for Debug configuration)
+FROM mcr.microsoft.com/dotnet/aspnet:9.0-alpine AS base
+#USER $APP_UID
 WORKDIR /app
+EXPOSE 8080
+EXPOSE 8081
+
+
+# Build stage
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
+ARG BUILD_CONFIGURATION=Release
+WORKDIR /src
+COPY ["FSO.App/FSO.App.csproj", "FSO.App/"]
+RUN dotnet restore "FSO.App/FSO.App.csproj"
+RUN dotnet tool install --global dotnet-ef
+
+COPY . .
+WORKDIR "/src/FSO.App"
+RUN dotnet build "./FSO.App.csproj" -c $BUILD_CONFIGURATION -o /app/build
+
+
+# Publish stage
+FROM build AS publish
+ARG BUILD_CONFIGURATION=Release
+RUN dotnet publish "FSO.App.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+
+
+# Final runtime image
+FROM base AS final
+
+# Set environment variable to enable globalization support
+ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false \
+    LC_ALL=en_US.UTF-8 \
+    LANG=en_US.UTF-8
+
+
+# Install ICU package for globalization support
+RUN apk add --no-cache icu-libs
+
+WORKDIR /app
+
+#
+#USER $APP_UID
+#
+#EXPOSE 8080
+#EXPOSE 8081
+
+#FROM base AS final
+
 COPY --from=publish /app/publish .
-
-
-ENTRYPOINT ["dotnet", "FSO.Client.dll"]
+ENTRYPOINT ["dotnet", "FSO.App.dll"]

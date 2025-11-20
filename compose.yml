@@ -1,0 +1,59 @@
+# Use postgres/example user/password credentials
+#version: '3.9'
+
+services:
+  db:
+    image: postgres:17.6
+    #user:  ${USEROS}:${USEROS}
+    container_name: fsoapp-db
+    restart: always
+    # set shared memory limit when using docker-compose
+    shm_size: 128mb
+    # or set shared memory limit when deploy via swarm stack
+    networks:
+      - fsoapp_network
+    ports:
+      - 5432:5432
+    volumes:
+      - ./data:/var/lib/postgresql/data
+    env_file:
+      - .env
+    #environment:
+    #  POSTGRES_USER: ${POSTGRES_USER}
+    #  POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      #PGDATA: ${PGDATA}
+    
+  web:
+    image: coglescode/fso-app:dev
+    build:
+      context: .
+      dockerfile: FSO.App/Dockerfile
+    container_name: fsoapp    
+    restart: always
+    networks:
+      - fsoapp_network
+    ports:
+      - 8080:8080
+    env_file:
+      - .env
+    #environment:
+    #  ASPNETCORE_ENVIRONMENT: Development
+    #  ConnectionString: Host=${POSTGRES_HOST};Database=${POSTGRES_DB};Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD}
+    #depends_on:
+    #  - db
+  
+  # For help with pgAdmin read the docs https://www.pgadmin.org/docs/pgadmin4/latest/index.html
+  #pgadmin:
+  #  image: dpage/pgadmin4:9.6
+  #  container_name: pgadmin
+  #  restart: always
+  #  ports:
+  #    - 5050:80
+  #  environment:
+  #    PGADMIN_DEFAULT_EMAIL: coglescode@gmail.com
+  #    PGADMIN_DEFAULT_PASSWORD: example
+
+networks:
+  fsoapp_network:
+    driver: bridge
+    external: true

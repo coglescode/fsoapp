@@ -4,45 +4,50 @@
     <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <EnableSdkContainerDebugging>True</EnableSdkContainerDebugging>
-    <ContainerBaseImage>mcr.microsoft.com/dotnet/aspnet:9.0-alpine</ContainerBaseImage>
-       
+		<UserSecretsId>0f53634c-3876-4ec0-8c1d-9056b6fedb24</UserSecretsId>
+		<InvariantGlobalization>true</InvariantGlobalization>
 
-    <DockerfileContext>.</DockerfileContext>
+    <EnableSdkContainerDebugging>True</EnableSdkContainerDebugging>
+    <ContainerBaseImage>mcr.microsoft.com/dotnet/aspnet:9.0</ContainerBaseImage>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <ContainerFamily>alpine</ContainerFamily>
-    <ContainerRegistry>docker.io</ContainerRegistry>
-    <InvariantGlobalization>true</InvariantGlobalization>
-    
+    <ContainerRegistry>docker.io</ContainerRegistry>    
     <ContainerRepository>coglescode/fso-app</ContainerRepository>
-    <ContainerImageTag>latest</ContainerImageTag>
+    <ContainerImageTag>dev</ContainerImageTag>
     
-    
+    <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>   
    
   </PropertyGroup>
   
   <ItemGroup>
-    <PackageReference Include="Azure.Identity" Version="1.14.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.6" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.6">
+    <PackageReference Include="Azure.Identity" Version="1.17.0" />
+    <PackageReference Include="Microsoft.Build" Version="17.14.28" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.10" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.10">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="9.0.6" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.6" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.6">
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="9.0.10" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.10" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.10">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.22.1" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="9.0.0" />
-    <PackageReference Include="Npgsql" Version="9.0.3" />
+    <PackageReference Include="Npgsql" Version="9.0.4" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.4" />
-    <PackageReference Include="Ulid" Version="1.3.4" />
+    <PackageReference Include="Ulid" Version="1.4.1" />
   </ItemGroup>
   
   <ItemGroup>
-    <ContainerPort Include="8081" />
+    <ContainerPort Include="8080" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <None Update="..\.dockerignore" Link=".dockerignore">
+      <DependentUpon>$(DockerfileFile)</DependentUpon>
+    </None>
   </ItemGroup>
 
 </Project>

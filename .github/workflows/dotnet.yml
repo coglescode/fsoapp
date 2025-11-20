@@ -1,31 +1,82 @@
 # This workflow will build a .NET project
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
 
-name: .NET
+name: FSO.App CI/CD
 
 on:
-  #push:
-  #  branches: [ "dev" ]
+  workflow_dispatch:  
+  push:
+    branches: [ "dev" ]
   pull_request:
-    branches: [ "main" ]
-  workflow_dispatch:
+     branches: [ "main" ]
+  
 
 jobs:
   build:
-
+    name: FSO.App project setup and build 
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
+    - name: Checkout the repo
+      uses: actions/checkout@v5
+
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 9.0.x
-    - name: Display version
-      run: dotnet --version    
-    #- name: Restore dependencies
-    #  run: dotnet restore
-    #- name: Build
-    #  run: dotnet build --no-restore
-    #- name: Test
-    #  run: dotnet test --no-build --verbosity normal
+    - name: Install dependencies
+      run: dotnet restore Capstone.sln
+    - name: Build
+      run: dotnet build FSO.App/ --no-restore
+    - name: Test
+      run: dotnet test FSO.App/ --no-build --verbosity normal
+    # - name: Publish
+    #   run: dotnet publish --no-build --no-restore --oslinux --arch x64 FSO.App/ /t:PublishContainer -p ContainerRegistry=docker.io 
+  
+  push_to_registry:
+    name: Build and push the docker image to Docker Hub
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: read
+      attestations: write
+    
+    steps:
+      - name: Checkout the repo
+        uses: actions/checkout@v5
+
+      - name: Extract Docker image metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ vars.DOCKER_USERNAME }}/fso-app
+
+      - name: Log in to your Docker Hub account
+        # uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
+        uses: docker/login-action@v3
+        with:
+          username: ${{ vars.DOCKER_USERNAME }}
+          password: ${{ secrets.KONTO_PASS }}
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      # - name: Extract metadata (tags, labels) for Docker
+      #   id: meta
+      #   uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
+      #   with:
+      #     images: coglescode/fso-app
+
+      - name: Build and push Docker image
+        #id: push
+        # uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
+        uses: docker/build-push-action@v6
+        with:
+          context: FSO.App
+          file: FSO.App/Dockerfile
+          # push: true
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ steps.meta.outputs.tags }}
+          # labels: ${{ steps.meta.outputs.labels }}
+          annotations: ${{ steps.meta.outputs.annotations }}
+
