@@ -28,7 +28,7 @@ jobs:
     - name: Test
       run: dotnet test FSO.App/ --no-build --verbosity normal
     - name: Publish
-      run: dotnet publish --no-build --no-restore --oslinux --arch x64 FSO.App/ /t:PublishContainer -p ContainerRegistry=docker.io 
+      run: dotnet publish --no-build --no-restore --os linux --arch x64 FSO.App/ /t:PublishContainer -p ContainerRegistry=docker.io 
   
   push_to_registry:
     name: Build and push the docker image to Docker Hub
