@@ -12,6 +12,9 @@ jobs:
   build:
     name: FSO.App project setup and build 
     runs-on: ubuntu-latest
+    concurrency:
+      group: solution_project_setup
+      cancel-in-progress: true
 
     steps:
     - name: Checkout the repo
