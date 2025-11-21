@@ -12,13 +12,6 @@ namespace FSO.App.Controllers;
 
   public class EventsController : Controller
   {
-      private readonly FSOAppContext _context;
-
-      public EventsController(FSOAppContext context)
-      {
-          _context = context;
-      }
-
       // GET: Events
       public async Task<IActionResult> Index()
       {
