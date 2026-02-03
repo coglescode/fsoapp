@@ -68,10 +68,10 @@ namespace FSO.App.Controllers;
       // GET: Events/Edit/5
       public async Task<IActionResult> Edit(Guid id)
       {
-          if (id == null)
-          {
-              return NotFound();
-          }
+          // if (id == null)
+          // {
+          //     return NotFound();
+          // }
 
           var currenEvent = await _context.Events.FindAsync(id);
           if (currenEvent == null)

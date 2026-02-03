@@ -11,7 +11,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace FSO.App.Migrations
 {
-    [DbContext(typeof(FSOAppContext))]
+    [DbContext(typeof(FsoAppContext))]
     [Migration("20250723133303_InitialCreate")]
     partial class InitialCreate
     {
