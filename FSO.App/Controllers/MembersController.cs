@@ -12,9 +12,9 @@ namespace FSO.App.Controllers;
 
   public class MembersController : Controller
   {
-      private readonly FSOAppContext _context;
+      private readonly FsoAppContext _context;
 
-      public MembersController(FSOAppContext context)
+      public MembersController(FsoAppContext context)
       {
           _context = context;
       }
@@ -38,12 +38,13 @@ namespace FSO.App.Controllers;
 
         var member = await _context.Members
         .FirstOrDefaultAsync(m => m.Id == id);
-          if (member == null)
-          {
-              return NotFound();
-          }
+        
+        if (member == null)
+        {
+          return NotFound();
+        }
 
-          return View(member);
+        return View(member);
       }
 
       // GET: Members/Create

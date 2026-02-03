@@ -12,28 +12,32 @@ namespace FSO.App.Controllers;
 
   public class EventsController : Controller
   {
+      private readonly FsoAppContext _context;
+
+      public EventsController(FsoAppContext context)
+      {
+          _context = context;
+      }
+
       // GET: Events
       public async Task<IActionResult> Index()
       {
-          return View(await _context.Events.ToListAsync());
+          var events = await _context.Events.ToListAsync();
+          
+          return View(events);
       }
 
       // GET: Events/Details/5
-      public async Task<IActionResult> Details(Guid? id)
+      public async Task<IActionResult> Details(Guid id)
       {
-          if (id == null)
-          {
-              return NotFound();
-          }
+        var currentEvent = await _context.Events.FirstOrDefaultAsync(e => e.Id == id);
+          
+        if (currentEvent == null)
+        {
+            return NotFound();
+        }
 
-          var @event = await _context.Events
-              .FirstOrDefaultAsync(m => m.Id == id);
-          if (@event == null)
-          {
-              return NotFound();
-          }
-
-          return View(@event);
+        return View(currentEvent);
       }
 
       // GET: Events/Create
@@ -47,34 +51,34 @@ namespace FSO.App.Controllers;
       // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
       [HttpPost]
       [ValidateAntiForgeryToken]
-      public async Task<IActionResult> Create([Bind("Title,StartDate,EndDate,Location,Description")] Event @event)
+      public async Task<IActionResult> Create([Bind("Title,StartDate,EndDate,Location,Description")] Event currentEvent)
       {
           if (ModelState.IsValid)
           {
-              @event.Id = Guid.NewGuid();
-              _context.Add(@event);
+              currentEvent.Id = Guid.NewGuid();
+              _context.Add(currentEvent);
               await _context.SaveChangesAsync();
               //return RedirectToAction(nameof(Index));
               return RedirectToAction("Index", "Home");
 
           }
-          return View(@event);
+          return View(currentEvent);
       }
 
       // GET: Events/Edit/5
-      public async Task<IActionResult> Edit(Guid? id)
+      public async Task<IActionResult> Edit(Guid id)
       {
           if (id == null)
           {
               return NotFound();
           }
 
-          var @event = await _context.Events.FindAsync(id);
-          if (@event == null)
+          var currenEvent = await _context.Events.FindAsync(id);
+          if (currenEvent == null)
           {
               return NotFound();
           }
-          return View(@event);
+          return View(currenEvent);
       }
 
       // POST: Events/Edit/5
@@ -82,9 +86,9 @@ namespace FSO.App.Controllers;
       // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
       [HttpPost]
       [ValidateAntiForgeryToken]
-      public async Task<IActionResult> Edit(Guid id, [Bind("Title,StartDate,EndDate,Location,Description")] Event @event)
+      public async Task<IActionResult> Edit(Guid id, [Bind("Id,Title,StartDate,EndDate,Location,Description")] Event currentEvent)
       {
-          if (id != @event.Id)
+          if (id != currentEvent.Id)
           {
               return NotFound();
           }
@@ -93,12 +97,12 @@ namespace FSO.App.Controllers;
           {
               try
               {
-                  _context.Update(@event);
+                  _context.Update(currentEvent);
                   await _context.SaveChangesAsync();
               }
               catch (DbUpdateConcurrencyException)
               {
-                  if (!EventExists(@event.Id))
+                  if (!EventExists(currentEvent.Id))
                   {
                       return NotFound();
                   }
@@ -109,25 +113,25 @@ namespace FSO.App.Controllers;
               }
               return RedirectToAction(nameof(Index));
           }
-          return View(@event);
+          return View(currentEvent);
       }
 
       // GET: Events/Delete/5
-      public async Task<IActionResult> Delete(Guid? id)
+      public async Task<IActionResult> Delete(Guid id)
       {
-          if (id == null)
-          {
-              return NotFound();
-          }
+          // if (id == null)
+          // {
+          //     return NotFound();
+          // }
 
-          var @event = await _context.Events
+          var currentEvent = await _context.Events
               .FirstOrDefaultAsync(m => m.Id == id);
-          if (@event == null)
+          if (currentEvent == null)
           {
               return NotFound();
           }
 
-          return View(@event);
+          return View(currentEvent);
       }
 
       // POST: Events/Delete/5
@@ -135,10 +139,10 @@ namespace FSO.App.Controllers;
       [ValidateAntiForgeryToken]
       public async Task<IActionResult> DeleteConfirmed(Guid id)
       {
-          var @event = await _context.Events.FindAsync(id);
-          if (@event != null)
+          var currentEvent = await _context.Events.FindAsync(id);
+          if (currentEvent != null)
           {
-              _context.Events.Remove(@event);
+              _context.Events.Remove(currentEvent);
           }
 
           await _context.SaveChangesAsync();
