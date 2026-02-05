@@ -6,12 +6,13 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
+
 #nullable disable
 
 namespace FSO.App.Migrations
 {
-    [DbContext(typeof(FSOAppContext))]
-    partial class FSOAppContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(FsoAppContext))]
+    partial class FsoAppContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {

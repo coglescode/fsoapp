@@ -9,39 +9,26 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace FSO.App.Data;
 
-public class FSOAppContext : DbContext
+public class FsoAppContext(DbContextOptions options) : DbContext(options)
 {
-  private readonly IConfiguration _configuration;
-  private readonly string? connectionString;
+  //private readonly IConfiguration _configuration;
+  //private readonly string? _connectionString;
 
-  public DbSet<Member> Members { get; set; } = default!;
-  public DbSet<Event> Events { get; set; } = default!; // Uncomment if you have an Event model
+  public DbSet<Member> Members { get; set; }
+  public DbSet<Event> Events { get; set; } // Uncomment if you have an Event model
 
-  public DbSet<SerialNumber> SerialNumbers { get; set; } = default!;
+  public DbSet<SerialNumber> SerialNumbers { get; set; }
 
 
-  public FSOAppContext (DbContextOptions<FSOAppContext> options, IConfiguration configuration) : base(options)
-  {
-      _configuration = configuration;
+  // public FsoAppContext (DbContextOptions<FsoAppContext> options, IConfiguration configuration) : base(options)
+  // {
+  //     _configuration = configuration;
+  //
+  //     _connectionString = _configuration.GetValue<string>("ConnectionString");
+  //     //_connectionString = _configuration.GetConnectionString("ConnectionString");
+  // }
+  //    
 
-      connectionString = _configuration.GetValue<string>("ConnectionString");
-      //connectionString = _configuration.GetConnectionString("POSTGRES_STRING");
-  }
-     
-
-  protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-  {
-
-    //connectionString = Environment.GetEnvironmentVariable("POSTGRES_STRING"); // For Environment Variables
-    optionsBuilder.UseNpgsql(connectionString);
-    
-
-    //if (string.IsNullOrEmpty(connectionString))
-    //{
-    //  throw new InvalidOperationException("Connection string 'POSTGRES_STRING' not found or is empty.");
-    //}
-
-  }
 
   protected override void OnModelCreating(ModelBuilder modelBuilder)
   {

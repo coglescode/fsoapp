@@ -10,19 +10,12 @@ using FSO.App.Models;
 
 namespace FSO.App.Controllers;
 
-  public class MembersController : Controller
+  public class MembersController(FsoAppContext context) : Controller
   {
-      private readonly FSOAppContext _context;
-
-      public MembersController(FSOAppContext context)
-      {
-          _context = context;
-      }
-
       // GET: Members
       public async Task<IActionResult> Index()
       {
-        var members = await _context.Members.ToListAsync();
+        var members = await context.Members.ToListAsync();
    
         return View(members);
 
@@ -36,14 +29,15 @@ namespace FSO.App.Controllers;
         //    return NotFound();
         //}
 
-        var member = await _context.Members
+        var member = await context.Members
         .FirstOrDefaultAsync(m => m.Id == id);
-          if (member == null)
-          {
-              return NotFound();
-          }
+        
+        if (member == null)
+        {
+          return NotFound();
+        }
 
-          return View(member);
+        return View(member);
       }
 
       // GET: Members/Create
@@ -61,8 +55,8 @@ namespace FSO.App.Controllers;
       {
           if (ModelState.IsValid)
           {
-              _context.Add(member);
-              await _context.SaveChangesAsync();
+              context.Add(member);
+              await context.SaveChangesAsync();
               return RedirectToAction(nameof(Index));
           }
           return View(member);
@@ -76,7 +70,7 @@ namespace FSO.App.Controllers;
         //    return NotFound();
         //}
 
-        var member = await _context.Members.FindAsync(id);
+        var member = await context.Members.FindAsync(id);
         if (member == null)
         {
           return NotFound();
@@ -100,8 +94,8 @@ namespace FSO.App.Controllers;
       {
           try
           {
-              _context.Update(member);
-              await _context.SaveChangesAsync();
+              context.Update(member);
+              await context.SaveChangesAsync();
           }
           catch (DbUpdateConcurrencyException)
           {
@@ -127,7 +121,7 @@ namespace FSO.App.Controllers;
           //    return NotFound();
           //}
 
-          var member = await _context.Members
+          var member = await context.Members
               .FirstOrDefaultAsync(m => m.Id == id);
           if (member == null)
           {
@@ -143,19 +137,19 @@ namespace FSO.App.Controllers;
       [ValidateAntiForgeryToken]
       public async Task<IActionResult> DeleteConfirmed(Guid id)
       {
-          var member = await _context.Members.FindAsync(id);
+          var member = await context.Members.FindAsync(id);
           if (member != null)
           {
-              _context.Members.Remove(member);
+              context.Members.Remove(member);
           }
 
-          await _context.SaveChangesAsync();
+          await context.SaveChangesAsync();
           return RedirectToAction(nameof(Index));
       }
 
       private bool MemberExists(Guid id)
       {
-          return _context.Members.Any(e => e.Id == id);
+          return context.Members.Any(e => e.Id == id);
       }
 
     public JsonResult GetAllMembers()
@@ -163,7 +157,7 @@ namespace FSO.App.Controllers;
 
       try
       {
-        var members = _context.Members
+        var members = context.Members
           .Select(m => new
           {
             m.Id,
