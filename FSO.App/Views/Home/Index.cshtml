@@ -8,8 +8,8 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
 
-        var calendarEl = document.getElementById('calendar');
-        var calendar = new FullCalendar.Calendar(calendarEl, {
+        const calendarEl = document.getElementById('calendar');
+        const calendar = new FullCalendar.Calendar(calendarEl, {
             timeZone: 'UTC',
             initialView: 'dayGridMonth', //window.outerWidth < 768 ? 'dayGridMonth' : 'timeGridDay',
             //height: 500,
@@ -52,35 +52,34 @@
 
             events: {
                 //url: '/AdminPortal/GetAllBookings',
-                url: '@Url.Action("GetAllEvents", "Events")',
+                url: '@Url.Action()',
                 method: 'GET',
-                success: function(data) {
+                success: function (data) {
                     console.log(data);
 
                     let events = data.map(event => ({
-                      // Down here goes Event Object properties follow the link for more info ==>  https://fullcalendar.io/docs/event-object
-                      title: event.title,
-                      start: event.startDate,
-                      end: event.endDate,
-                      allDay: true,
-                      // Proper routing to the booking details page http://localhost:5190/Booking/ViewBooking?orderNumber=<orderNumber>
-                      url: `/Events/Details/?id=${event.id}`,
-                      // url: '@Url.Action("Details", "Events", new { id = "__ID__" })'.replace('__ID__', events.id),
-                      // extendedProps: {
-                      //     id: event.id,
-                      //     description: event.description,
-                      //     location: event.location
-                      //     //status: booking.isCancelled
-                      // }
+                        // Down here goes Event Object properties follow the link for more info ==>  https://fullcalendar.io/docs/event-object
+                        title: event.title,
+                        start: event.startDate,
+                        end: event.endDate,
+                        allDay: true,
+                        // Proper routing to the booking details page http://localhost:5190/Booking/ViewBooking?orderNumber=<orderNumber>
+                        url: `/Events/Details/?id=${event.id}`,@Url.Action("Details", "Events", new { id = "__ID__" })'.replace('__ID__', events.id),
+                        // extendedProps: {
+                        //     id: event.id,
+                        //     description: event.description,
+                        //     location: event.location
+                        //     //status: booking.isCancelled
+                        // }
                     }));
 
                     return events;
                 },
-                failure: function() {
+                failure: function () {
                     alert('There was an error while fetching events!');
                 },
 
-            },                
+            },
             // eventDidMount: function(info) {
             //     //console.log(info.event.extendedProps.price);
             //     var events = info.event.extendedProps.description;
@@ -95,12 +94,12 @@
             //     console.log(events);
 
             // },
-            eventClick: function(info) {
+            eventClick: function (info) {
 
                 let id = info.event.extendedProps.id; // Data type string
                 //console.log(orderNr);
                 if (info.event.url) {
-                window.open(info.event.url, '_self');
+                    window.open(info.event.url, '_self');
                 }
 
             }

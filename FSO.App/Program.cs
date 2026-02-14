@@ -13,12 +13,13 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Configuration.AddEnvironmentVariables();
            
-string? connString = Environment.GetEnvironmentVariable("ConnectionString") ?? throw new InvalidOperationException("Connection string not found.");
+string? connString = Environment.GetEnvironmentVariable("ConnectionString"); // ?? throw new InvalidOperationException("Connection string not found.");
 
 Console.WriteLine($"ConnectionString is: {connString}");
 
 builder.Services.AddDbContext<FsoAppContext>(options =>
-    options.UseNpgsql(connString));
+    options.UseNpgsql(Environment.GetEnvironmentVariable("ConnectionString") ?? throw new InvalidOperationException("Connection string 'FsoAppDbContext' not found.")));
+
 
 var app = builder.Build();
 
