@@ -161,7 +161,10 @@ namespace FSO.App.Controllers;
             e.Location,
             e.Description
           })
+          .OrderBy(e => e.StartDate)
           .ToList();
+        
+        Console.WriteLine("The events are:" + string.Join(",", events));
 
         return Json(events);
 

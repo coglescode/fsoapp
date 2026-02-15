@@ -25,7 +25,7 @@
             //editable: true,
             //selectable: true,
             //aspectRatio: 10,
-            //contentHeight: window.innerWidth < 768 ? '20' : 'auto ',
+            //contentHeight: window.innerWidth < 768 ? '20' : 'auto',
 
             // customButtons: {
             //   addEventButton: {
@@ -35,7 +35,7 @@
             //         method: 'POST',
             //       // var dateStr = prompt('Enter a date in YYYY-MM-DD format');
             //       // var date = new Date(dateStr + 'T00:00:00'); // will be in local time
-
+            
             //       // if (!isNaN(date.valueOf())) { // valid?
             //       //   calendar.addEvent({
             //       //     title: 'dynamic event',
@@ -52,20 +52,24 @@
 
             events: {
                 //url: '/AdminPortal/GetAllBookings',
-                url: '@Url.Action()',
+                url: '@Url.Action("GetAllEvents", "Events")',
                 method: 'GET',
                 success: function (data) {
                     console.log(data);
 
-                    let events = data.map(event => ({
+                    let events;
+                    events = data.map(event => ({
                         // Down here goes Event Object properties follow the link for more info ==>  https://fullcalendar.io/docs/event-object
                         title: event.title,
                         start: event.startDate,
                         end: event.endDate,
                         allDay: true,
-                        // Proper routing to the booking details page http://localhost:5190/Booking/ViewBooking?orderNumber=<orderNumber>
-                        url: `/Events/Details/?id=${event.id}`,@Url.Action("Details", "Events", new { id = "__ID__" })'.replace('__ID__', events.id),
-                        // extendedProps: {
+                        // The link below retrieves the events in JSON format
+                        url: '@Url.Action("Details", "Events", new { id = "__ID__" })'.replace('__ID__', event.id),
+                        //url: `/Events/Details/id=${event.id}`,
+                         
+                        
+                        @* // extendedProps: { *@
                         //     id: event.id,
                         //     description: event.description,
                         //     location: event.location
