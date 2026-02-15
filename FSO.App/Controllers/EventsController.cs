@@ -10,19 +10,12 @@ using FSO.App.Models;
 
 namespace FSO.App.Controllers;
 
-  public class EventsController : Controller
+  public class EventsController(FsoAppContext context) : Controller
   {
-      private readonly FsoAppContext _context;
-
-      public EventsController(FsoAppContext context)
-      {
-          _context = context;
-      }
-
       // GET: Events
       public async Task<IActionResult> Index()
       {
-          var events = await _context.Events.ToListAsync();
+          var events = await context.Events.ToListAsync();
           
           return View(events);
       }
@@ -30,7 +23,7 @@ namespace FSO.App.Controllers;
       // GET: Events/Details/5
       public async Task<IActionResult> Details(Guid id)
       {
-        var currentEvent = await _context.Events.FirstOrDefaultAsync(e => e.Id == id);
+        var currentEvent = await context.Events.FirstOrDefaultAsync(e => e.Id == id);
           
         if (currentEvent == null)
         {
@@ -56,8 +49,8 @@ namespace FSO.App.Controllers;
           if (ModelState.IsValid)
           {
               currentEvent.Id = Guid.NewGuid();
-              _context.Add(currentEvent);
-              await _context.SaveChangesAsync();
+              context.Add(currentEvent);
+              await context.SaveChangesAsync();
               //return RedirectToAction(nameof(Index));
               return RedirectToAction("Index", "Home");
 
@@ -73,7 +66,7 @@ namespace FSO.App.Controllers;
           //     return NotFound();
           // }
 
-          var currenEvent = await _context.Events.FindAsync(id);
+          var currenEvent = await context.Events.FindAsync(id);
           if (currenEvent == null)
           {
               return NotFound();
@@ -97,8 +90,8 @@ namespace FSO.App.Controllers;
           {
               try
               {
-                  _context.Update(currentEvent);
-                  await _context.SaveChangesAsync();
+                  context.Update(currentEvent);
+                  await context.SaveChangesAsync();
               }
               catch (DbUpdateConcurrencyException)
               {
@@ -124,7 +117,7 @@ namespace FSO.App.Controllers;
           //     return NotFound();
           // }
 
-          var currentEvent = await _context.Events
+          var currentEvent = await context.Events
               .FirstOrDefaultAsync(m => m.Id == id);
           if (currentEvent == null)
           {
@@ -139,26 +132,26 @@ namespace FSO.App.Controllers;
       [ValidateAntiForgeryToken]
       public async Task<IActionResult> DeleteConfirmed(Guid id)
       {
-          var currentEvent = await _context.Events.FindAsync(id);
+          var currentEvent = await context.Events.FindAsync(id);
           if (currentEvent != null)
           {
-              _context.Events.Remove(currentEvent);
+              context.Events.Remove(currentEvent);
           }
 
-          await _context.SaveChangesAsync();
+          await context.SaveChangesAsync();
           return RedirectToAction(nameof(Index));
       }
 
       private bool EventExists(Guid id)
       {
-          return _context.Events.Any(e => e.Id == id);
+          return context.Events.Any(e => e.Id == id);
       }
 
     public JsonResult GetAllEvents()
     {
       try
       {
-        var events = _context.Events
+        var events = context.Events
           .Select(e => new
           {
             e.Id,
@@ -168,7 +161,10 @@ namespace FSO.App.Controllers;
             e.Location,
             e.Description
           })
+          .OrderBy(e => e.StartDate)
           .ToList();
+        
+        Console.WriteLine("The events are:" + string.Join(",", events));
 
         return Json(events);
 
