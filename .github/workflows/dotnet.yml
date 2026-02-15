@@ -10,7 +10,7 @@ on:
  
 jobs:
   build:
-    name: FSO.App project setup and build 
+    name: FsoMVC project setup and build 
     runs-on: ubuntu-latest
     concurrency:
       group: solution_project_setup
@@ -27,9 +27,9 @@ jobs:
     - name: Install dependencies
       run: dotnet restore Capstone.sln
     - name: Build
-      run: dotnet build FSO.App/ --no-restore
+      run: dotnet build FsoMVC/ --no-restore
     - name: Test
-      run: dotnet test FSO.App/ --no-build --verbosity normal
+      run: dotnet test FsoMVC/ --no-build --verbosity normal
     # - name: Publish
     #   run: dotnet publish --no-build --no-restore --os linux --arch x64 FSO.App/ -t:PublishContainer -p ContainerRegistry=docker.io 
   
