@@ -19,44 +19,12 @@
                 right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
             },
             themeSystem: 'bootstrap5',
-            //dayMaxEvents: true,
-            //showNonCurrentDates: true,
-            //weekNumbers: true,
-            //editable: true,
-            //selectable: true,
-            //aspectRatio: 10,
-            //contentHeight: window.innerWidth < 768 ? '20' : 'auto',
-
-            // customButtons: {
-            //   addEventButton: {
-            //     text: 'add event...',
-            //     eventClick: function() {
-            //         url: 'Url.Action("Create", "Events")',
-            //         method: 'POST',
-            //       // var dateStr = prompt('Enter a date in YYYY-MM-DD format');
-            //       // var date = new Date(dateStr + 'T00:00:00'); // will be in local time
-            
-            //       // if (!isNaN(date.valueOf())) { // valid?
-            //       //   calendar.addEvent({
-            //       //     title: 'dynamic event',
-            //       //     start: date,
-            //       //     allDay: true
-            //       //   });
-            //       //   alert('Great. Now, update your database...');
-            //       // } else {
-            //       //   alert('Invalid date.');
-            //       // }
-            //     }
-            //   }
-            // },
-
+           
             events: {
-                //url: '/AdminPortal/GetAllBookings',
                 url: '@Url.Action("GetAllEvents", "Events")',
                 method: 'GET',
                 success: function (data) {
-                    console.log(data);
-
+                   
                     let events;
                     events = data.map(event => ({
                         // Down here goes Event Object properties follow the link for more info ==>  https://fullcalendar.io/docs/event-object
@@ -66,15 +34,6 @@
                         allDay: true,
                         // The link below retrieves the events in JSON format
                         url: '@Url.Action("Details", "Events", new { id = "__ID__" })'.replace('__ID__', event.id),
-                        //url: `/Events/Details/id=${event.id}`,
-                         
-                        
-                        @* // extendedProps: { *@
-                        //     id: event.id,
-                        //     description: event.description,
-                        //     location: event.location
-                        //     //status: booking.isCancelled
-                        // }
                     }));
 
                     return events;
@@ -82,37 +41,18 @@
                 failure: function () {
                     alert('There was an error while fetching events!');
                 },
-
             },
-            // eventDidMount: function(info) {
-            //     //console.log(info.event.extendedProps.price);
-            //     var events = info.event.extendedProps.description;
-
-            //     // Booking timepassed status check
-            //     //var timepassed = ( new Date(info.event.end) < new Date() ) ? console.log('Time passed' + info.event.end ) : console.log('Time not passed');
-            //     // var timePassed = ( new Date(info.event.end) < new Date() ) ? info.el.style.backgroundColor = 'grey' : info.el.style.textColor = 'auto';
-
-            //     // IsCancelled status check
-            //     // var status = (bookingStatus === true) ? info.el.style.backgroundColor = 'red' : info.el.style.backgroundColor = 'auto';
-
-            //     console.log(events);
-
-            // },
+           
             eventClick: function (info) {
-
                 let id = info.event.extendedProps.id; // Data type string
-                //console.log(orderNr);
+                
                 if (info.event.url) {
                     window.open(info.event.url, '_self');
                 }
-
             }
-
         });
 
         calendar.render(); 
-
-
     });
     
 </script>
