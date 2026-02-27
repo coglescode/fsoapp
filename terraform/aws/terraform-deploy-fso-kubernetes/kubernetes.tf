@@ -152,6 +152,9 @@ resource "kubernetes_deployment" "fso_client" {
           env {
             name  = "MembersEndpointUrl"
             value = "http://${kubernetes_service.api_service.status[0].load_balancer[0].ingress[0].hostname}:5046/api/members"
+            
+            name  = "CONNECTION_STRING"
+            value = "<YOUR_CONNECTION_STRING>"
           }
               
         }

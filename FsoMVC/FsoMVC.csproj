@@ -8,11 +8,11 @@
 		<InvariantGlobalization>true</InvariantGlobalization>
 
     <EnableSdkContainerDebugging>True</EnableSdkContainerDebugging>
-    <ContainerBaseImage>mcr.microsoft.com/dotnet/aspnet:9.0</ContainerBaseImage>
+    <ContainerBaseImage>mcr.microsoft.com/dotnet/aspnet:10.0</ContainerBaseImage>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <ContainerFamily>alpine</ContainerFamily>
     <ContainerRegistry>docker.io</ContainerRegistry>    
-    <ContainerRepository>coglescode/fso-app</ContainerRepository>
+    <ContainerRepository>coglescode/fsomvc</ContainerRepository>
     <ContainerImageTag>dev</ContainerImageTag>
     
     <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>   

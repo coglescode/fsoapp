@@ -69,8 +69,13 @@ resource "kubernetes_deployment" "fsoapp" {
           image = "coglescode/fso-app:dev"
           name  = "fsoapp"
 
-          port {
-            container_port = 8080
+					port {
+					container_port = 8080
+					}
+            
+          env {
+            name  = "CONNECTION_STRING"
+            value = "<YOUR_CONNECTION_STRING>" 
           }  
      
         }
