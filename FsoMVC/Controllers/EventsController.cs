@@ -12,8 +12,9 @@ public class EventsController(FsoAppContext context) : Controller
   public async Task<IActionResult> Index()
   {
     var events = context.Events
-      .Include(e => e.MemberRelated);
-      // .OrderBy(e => e.StartDate);
+      .Include(e => e.MemberRelated)
+      .OrderBy(e => e.StartDate);
+    
     return View(await events.ToListAsync());
   }
 
@@ -31,7 +32,7 @@ public class EventsController(FsoAppContext context) : Controller
   public IActionResult Create()
   {
     ViewData["MemberId"] = new SelectList(context.Members, "Id", "Name");
-    // PopulateMembersDropDownList();
+    
     return View();
   }
 
@@ -61,11 +62,12 @@ public class EventsController(FsoAppContext context) : Controller
     
     var currenEvent = await context.Events
       .FindAsync(id);
-      // .AsNoTracking()
-      // .FirstOrDefaultAsync(e => e.Id == id);
+      
+    if (currenEvent == null)
+    {
+      return NotFound();
+    }
 
-    if (currenEvent == null) return NotFound();
-    
     return View(currenEvent);
   }
 
@@ -76,13 +78,13 @@ public class EventsController(FsoAppContext context) : Controller
   [ValidateAntiForgeryToken]
   public async Task<IActionResult> Edit(Guid? id,[Bind("Id,Title,StartDate,EndDate,Location,Description, MemberId")] Event eventId)
   {
-    if (id != eventId.Id) return NotFound();
-    
-    var eventToUpdate = await context.Events
-      // .Include(e => e.MemberRelated)  
-      .FirstOrDefaultAsync(m => m.Id == id);
-   
+    if (id != eventId.Id)
+    {
+      return NotFound();
+    }
 
+    var eventToUpdate = await context.Events.FirstOrDefaultAsync(m => m.Id == id);
+   
     if (ModelState.IsValid)
     {
       try
@@ -115,14 +117,7 @@ public class EventsController(FsoAppContext context) : Controller
   // GET: Events/Delete/5
   public async Task<IActionResult> Delete(Guid id)
   {
-    // if (id == null)
-    // {
-    //     return NotFound();
-    // }
-
-    var currentEvent = await context.Events
-      // .Include(e => e.E)  
-      .FirstOrDefaultAsync(m => m.Id == id);
+    var currentEvent = await context.Events.FirstOrDefaultAsync(m => m.Id == id);
     
     if (currentEvent == null)
     {

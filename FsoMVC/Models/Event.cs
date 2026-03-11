@@ -22,8 +22,6 @@ public class Event
   public string Location { get; set; } = null!;
 
   public string Description { get; set; } = null!;
-  // Navigation property for related members
-  //public ICollection<Member> Members { get; set; } = new List<Member>();
   
   public Guid MemberId { get; set; } // Required foreign key
   

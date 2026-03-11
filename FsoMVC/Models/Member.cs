@@ -14,5 +14,4 @@ public class Member
   
   public ICollection<Event> Events { get; } = new List<Event>(); // Member's collection of events
   
-  // public Event EventRelated { get; set; } = null!;
 }

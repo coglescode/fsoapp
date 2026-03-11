@@ -13,28 +13,23 @@ public class MembersController(FsoAppContext context) : Controller
   {
     var members = context.Members
       .Include(e => e.Events)
-        // .ThenInclude(e => e.)
       .AsNoTracking();
     
     ViewData["Title"] = new SelectList(context.Events, "Id", "Title");
  
     return View(await members.ToListAsync());
-
-    // return View(members);
   }
 
   // GET: Members/Details/5
   public async Task<IActionResult> Details(Guid id)
   {
-    //if (id == null)
-    //{
-    //    return NotFound();
-    //}
-
     var member = await context.Members
       .FirstOrDefaultAsync(m => m.Id == id);
 
-    if (member == null) return NotFound();
+    if (member == null)
+    {
+      return NotFound();
+    }
 
     return View(member);
   }
@@ -65,13 +60,13 @@ public class MembersController(FsoAppContext context) : Controller
   // GET: Members/Edit/5
   public async Task<IActionResult> Edit(Guid id)
   {
-    //if (id == null)
-    //{
-    //    return NotFound();
-    //}
-
     var member = await context.Members.FindAsync(id);
-    if (member == null) return NotFound();
+    
+    if (member == null)
+    {
+      return NotFound();
+    }
+
     return View(member);
   }
 
@@ -82,7 +77,10 @@ public class MembersController(FsoAppContext context) : Controller
   [ValidateAntiForgeryToken]
   public async Task<IActionResult> Edit(Guid id, [Bind("Id,Name,LastName")] Member member)
   {
-    if (id != member.Id) return NotFound();
+    if (id != member.Id)
+    {
+      return NotFound();
+    }
 
     if (ModelState.IsValid)
     {
@@ -107,17 +105,11 @@ public class MembersController(FsoAppContext context) : Controller
   // GET: Members/Delete/5
   public async Task<IActionResult> Delete(Guid id)
   {
-    //if (id == null)
-    //{
-    //    return NotFound();
-    //}
-
-    var member = await context.Members
-      .FirstOrDefaultAsync(m => m.Id == id);
+    var member = await context.Members.FirstOrDefaultAsync(m => m.Id == id);
+    
     if (member == null) return NotFound();
 
     return View(member);
-    //return RedirectToAction(nameof(Index));
   }
 
   // POST: Members/Delete/5
@@ -127,9 +119,14 @@ public class MembersController(FsoAppContext context) : Controller
   public async Task<IActionResult> DeleteConfirmed(Guid id)
   {
     var member = await context.Members.FindAsync(id);
-    if (member != null) context.Members.Remove(member);
+    
+    if (member != null)
+    {
+      context.Members.Remove(member);
+    }
 
     await context.SaveChangesAsync();
+    
     return RedirectToAction(nameof(Index));
   }
 
