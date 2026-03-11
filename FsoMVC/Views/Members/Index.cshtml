@@ -1,43 +1,63 @@
 ﻿@model IEnumerable<FsoMVC.Models.Member>
 
+
 @{
-    ViewData["Title"] = "Index";
+  ViewData["Title"] = "Members";
 }
 
-<h1>Index</h1>
+<h1>Members</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+  <a asp-action="Create">Create New</a>
 </p>
 <table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.LastName)
-            </th>
-          @*   <th>
-                @Html.DisplayFor(model => model.Id)
-            </th> *@
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model) {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.LastName)
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                </td>
-            </tr>
+  <thead>
+  <tr>
+    <th>
+      @Html.DisplayNameFor(model => model.Name)
+    </th>
+    <th>
+      @Html.DisplayNameFor(model => model.LastName)
+    </th>
+    <th>
+      @Html.DisplayNameFor(model => model.Events)
+    </th>
+    
+  </tr>
+  </thead>
+  <tbody>
+  @foreach (var item in Model)
+  {
+    <tr>
+      <td>
+        @Html.DisplayFor(modelItem => item.Name)
+      </td>
+      <td>
+        @Html.DisplayFor(modelItem => item.LastName)
+      </td>
+      
+      @if (item.Events != null && item.Events.Any())
+      {
+        @foreach (var ev in item.Events)
+        {
+          <td>
+            
+              @Html.DisplayFor(modelItem => ev.Title)
+            
+          </td>    
         }
-    </tbody>
+      }
+      else
+      {
+        <span class="text-muted">No events</span>
+      }
+      
+      <td>
+        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+      </td>
+    </tr>
+  }
+  </tbody>
 </table>

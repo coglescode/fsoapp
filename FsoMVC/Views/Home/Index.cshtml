@@ -1,58 +1,58 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+  ViewData["Title"] = "Home Page";
 }
 
 <a class="nav-link text-dark" asp-area="" asp-controller="Events" asp-action="Create">add event...</a>
 <div id="calendar"></div>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
+  document.addEventListener('DOMContentLoaded', function () {
 
-        const calendarEl = document.getElementById('calendar');
-        const calendar = new FullCalendar.Calendar(calendarEl, {
-            timeZone: 'UTC',
-            initialView: 'dayGridMonth', //window.outerWidth < 768 ? 'dayGridMonth' : 'timeGridDay',
-            //height: 500,
-            headerToolbar: {
-                left: 'prev,next today prevYear,nextYear',
-                center: 'title',
-                right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
-            },
-            themeSystem: 'bootstrap5',
-           
-            events: {
-                url: '@Url.Action("GetAllEvents", "Events")',
-                method: 'GET',
-                success: function (data) {
-                   
-                    let events;
-                    events = data.map(event => ({
-                        // Down here goes Event Object properties follow the link for more info ==>  https://fullcalendar.io/docs/event-object
-                        title: event.title,
-                        start: event.startDate,
-                        end: event.endDate,
-                        allDay: true,
-                        // The link below retrieves the events in JSON format
-                        url: '@Url.Action("Details", "Events", new { id = "__ID__" })'.replace('__ID__', event.id),
-                    }));
+    const calendarEl = document.getElementById('calendar');
+    const calendar = new FullCalendar.Calendar(calendarEl, {
+      timeZone: 'UTC',
+      initialView: 'dayGridMonth', //window.outerWidth < 768 ? 'dayGridMonth' : 'timeGridDay',
+      //height: 500,
+      headerToolbar: {
+        left: 'prev,next today prevYear,nextYear',
+        center: 'title',
+        right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
+      },
+      themeSystem: 'bootstrap5',
 
-                    return events;
-                },
-                failure: function () {
-                    alert('There was an error while fetching events!');
-                },
-            },
-           
-            eventClick: function (info) {
-                let id = info.event.extendedProps.id; // Data type string
-                
-                if (info.event.url) {
-                    window.open(info.event.url, '_self');
-                }
-            }
-        });
+      events: {
+        url: '@Url.Action("GetAllEvents", "Events")',
+        method: 'GET',
+        success: function (data) {
 
-        calendar.render(); 
+          let events;
+          events = data.map(event => ({
+            // Down here goes Event Object properties follow the link for more info ==>  https://fullcalendar.io/docs/event-object
+            title: event.title,
+            start: event.startDate,
+            end: event.endDate,
+            allDay: true,
+            // The link below retrieves the events in JSON format
+            url: '@Url.Action("Details", "Events", new { id = "__ID__" })'.replace('__ID__', event.id),
+          }));
+
+          return events;
+        },
+        failure: function () {
+          alert('There was an error while fetching events!');
+        },
+      },
+
+      eventClick: function (info) {
+        let id = info.event.extendedProps.id; // Data type string
+
+        if (info.event.url) {
+          window.open(info.event.url, '_self');
+        }
+      }
     });
+
+    calendar.render();
+  });
     
 </script>

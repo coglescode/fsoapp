@@ -1,8 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-
-
-
-namespace FsoMVC.Models;
+﻿namespace FsoMVC.Models;
 
 // Dependent model
 public class SerialNumber
@@ -15,5 +11,4 @@ public class SerialNumber
 
   // [ForeignKey]
   //public Member? Member { get; set; } // Reference navigation property to the parent model
-
 }

@@ -8,6 +8,7 @@ FullCalendar.Bootstrap5 = (function (exports, core, internal$1) {
 
     class BootstrapTheme extends internal$1.Theme {
     }
+
     BootstrapTheme.prototype.classes = {
         root: 'fc-theme-bootstrap5',
         tableCellShaded: 'fc-theme-bootstrap5-shaded',
@@ -57,7 +58,7 @@ FullCalendar.Bootstrap5 = (function (exports, core, internal$1) {
     exports.Internal = internal;
     exports["default"] = plugin;
 
-    Object.defineProperty(exports, '__esModule', { value: true });
+    Object.defineProperty(exports, '__esModule', {value: true});
 
     return exports;
 
