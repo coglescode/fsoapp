@@ -16,10 +16,10 @@
       @Html.DisplayNameFor(model => model.Title)
     </th>
     <th>
-      @Html.DisplayNameFor(model => model.StartDate)
+      @Html.DisplayNameFor(model => model.StartTime)
     </th>
     <th>
-      @Html.DisplayNameFor(model => model.EndDate)
+      @Html.DisplayNameFor(model => model.EndTime)
     </th>
     <th>
       @Html.DisplayNameFor(model => model.Location)
@@ -41,10 +41,10 @@
         @Html.DisplayFor(modelItem => item.Title)
       </td>
       <td>
-        @Html.DisplayFor(modelItem => item.StartDate)
+        @Html.DisplayFor(modelItem => item.StartTime.LocalDateTime)
       </td>
       <td>
-        @Html.DisplayFor(modelItem => item.EndDate)
+        @Html.DisplayFor(modelItem => item.EndTime.LocalDateTime)
       </td>
       <td>
         @Html.DisplayFor(modelItem => item.Location)

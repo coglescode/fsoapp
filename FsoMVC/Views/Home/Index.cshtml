@@ -1,58 +1,132 @@
-﻿@{
+﻿@model Event
+@{
   ViewData["Title"] = "Home Page";
+  
 }
 
-<a class="nav-link text-dark" asp-area="" asp-controller="Events" asp-action="Create">add event...</a>
-<div id="calendar"></div>
-
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-
-    const calendarEl = document.getElementById('calendar');
-    const calendar = new FullCalendar.Calendar(calendarEl, {
-      timeZone: 'UTC',
-      initialView: 'dayGridMonth', //window.outerWidth < 768 ? 'dayGridMonth' : 'timeGridDay',
-      //height: 500,
-      headerToolbar: {
-        left: 'prev,next today prevYear,nextYear',
-        center: 'title',
-        right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
-      },
-      themeSystem: 'bootstrap5',
-
-      events: {
-        url: '@Url.Action("GetAllEvents", "Events")',
-        method: 'GET',
-        success: function (data) {
-
-          let events;
-          events = data.map(event => ({
-            // Down here goes Event Object properties follow the link for more info ==>  https://fullcalendar.io/docs/event-object
-            title: event.title,
-            start: event.startDate,
-            end: event.endDate,
-            allDay: true,
-            // The link below retrieves the events in JSON format
-            url: '@Url.Action("Details", "Events", new { id = "__ID__" })'.replace('__ID__', event.id),
-          }));
-
-          return events;
-        },
-        failure: function () {
-          alert('There was an error while fetching events!');
-        },
-      },
-
-      eventClick: function (info) {
-        let id = info.event.extendedProps.id; // Data type string
-
-        if (info.event.url) {
-          window.open(info.event.url, '_self');
-        }
-      }
-    });
-
-    calendar.render();
-  });
+@(Html.EJS().Schedule("schedule")
+    .Height("550px")
+    .Views(view => {
+      view.Option(View.TimelineMonth).Add();
+      view.Orientation(Orientation.Vertical);
+    })
+    .EventSettings(e => e
+      .DataSource(d => d
+        .Url(Url.Action("GetData", "Schedule"))           // Read
+        .CrudUrl(Url.Action("CrudActions", "Schedule"))    // Insert/Update/Delete
+        .Adaptor("UrlAdaptor")
+      )
+      .Fields(f => f
+        .Id("Id")
+        .Subject(sub => sub.Title("Event Name").Name("Title").Default("Add Name"))
+        .Location(loc => loc.Title("Event Location").Name("Location"))
+        .Description(des => des.Title("Summary").Name("Description"))
+        .StartTime(st => st.Title("From").Name("StartTime"))
+        .EndTime(et => et.Title("To").Name("EndTime"))
+        .IsAllDay(isAllDay => isAllDay.Name("IsAllDay"))
+        // .RecurrenceRule("RecurrenceRule")
+        // .RecurrenceID("RecurrenceID")
+        // .RecurrenceException("RecurrenceException")
+      )
+    )
     
+    .PopupOpen("onPopupOpen")
+    //.PopupClose("onPopupClose")
+  .Render()
+)
+
+
+<script type="text/javascript">
+  document.addEventListener("DOMContentLoaded", () => {
+    onPopupOpen();
+  
+  });
+
+
+  function onPopupOpen(args) {
+      if (args.type !== 'Editor') {
+        return;
+      }
+
+      // Prevent adding the custom field multiple times
+      if (args.element.querySelector('.custom-field-row')) {
+        return;
+      }
+      
+      @* *@
+      @* const scheduleEditform = args.element.querySelector('.e-schedule-form'); *@
+      @* *@
+      @* // Prevent duplicate custom fields *@
+      @* if (scheduleEditform.querySelector('.custom-field-row')) { *@
+      @*   // Just ensure the value is set correctly for this event (important for editing) *@
+      @*   updateMemberDropdownValue(args); *@
+      @*   return; *@
+      @* } *@
+      
+      // Create required custom elements in initial time
+      //if (!args.element.querySelector('.custom-field-row')) {
+      
+      // Create the row and container
+      const row = ej.base.createElement('div', { 
+        className: 'custom-field-row e-title-location-row' 
+      });
+      
+      const formElement = args.element.querySelector('.e-schedule-form');
+      
+      // Insert before description row
+      @* formElement.firstChild.insertBefore(row, args.element.querySelector('.e-description-row')); *@
+
+      const descriptionRow = args.element.querySelector('.e-description-row');
+      if (descriptionRow) {
+        formElement.firstChild.insertBefore(row, descriptionRow);
+      } else {
+        formElement.firstChild.appendChild(row);
+      }      
+      
+      const container = ej.base.createElement('div', 
+        { className: 'e-member-container e-subject-container'
+      });
+      
+      const inputEle = ej.base.createElement('input', {
+        className: 'e-field', 
+        attrs: { name: 'MemberId' }
+      });
+      
+      container.appendChild(inputEle);
+      row.appendChild(container);
+
+      // Create DropDownList
+        const drowDownList = new ej.dropdowns.DropDownList({
+          dataSource: new ej.data.DataManager({
+            url: '@Url.Action("GetAllMembers", "Schedule")',   // Your action URL
+            adaptor: new ej.data.UrlAdaptor(),       // or JsonAdaptor if needed
+            crossDomain: false
+          }),
+
+          floatLabelType: 'Always',
+          placeholder: 'Member',
+          allowFiltering: true,
+          filterType: 'Contains',
+          fields: { text: 'text', value: 'value' },
+          /* value: (args.data && args.data.MemberRelated) ? args.data.MemberRelated : null,  */
+          text: null 
+        });
+        
+        @* setTimeout(() => { *@
+        @*   drowDownList.appendTo(inputEle); *@
+        @*   dropDownList.refresh();        // This often fixes the "blank on first open" *@
+        @* *@
+        @*   // Extra safety: force a layout reflow *@
+        @*   inputEle.style.display = 'none'; *@
+        @*   setTimeout(() => { *@
+        @*     inputEle.style.display = 'block'; *@
+        @*   }, 10); *@
+        @* }, 200); *@
+      
+        drowDownList.appendTo(inputEle);
+        inputEle.setAttribute('name', 'MemberId');
+      //}
+        
+      
+  };
 </script>

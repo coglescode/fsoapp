@@ -3,6 +3,8 @@ using FsoMVC.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Syncfusion.Blazor;
+using DataManagerRequest = Syncfusion.EJ2.Base.DataManagerRequest;
 
 namespace FsoMVC.Controllers;
 
@@ -135,26 +137,6 @@ public class MembersController(FsoAppContext context) : Controller
     return context.Members.Any(e => e.Id == id);
   }
 
-  public JsonResult GetAllMembers()
-  {
-    try
-    {
-      var members = context.Members
-        .Select(m => new
-        {
-          m.Id,
-          m.Name,
-          m.LastName
-        })
-        .ToList();
-
-      return Json(members);
-    }
-    catch (Exception)
-    {
-      // Log the exception (using a logging framework)
-      // Return an error view or message
-      return Json(new { message = "An error occurred while loading bookings." });
-    }
-  }
+ 
+  
 }

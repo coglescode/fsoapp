@@ -17,16 +17,16 @@
       @Html.DisplayFor(model => model.Title)
     </dd>
     <dt class="col-sm-2">
-      @Html.DisplayNameFor(model => model.StartDate)
+      @Html.DisplayNameFor(model => model.StartTime)
     </dt>
     <dd class="col-sm-10">
-      @Html.DisplayFor(model => model.StartDate)
+      @Html.DisplayFor(model => model.StartTime.LocalDateTime)
     </dd>
     <dt class="col-sm-2">
-      @Html.DisplayNameFor(model => model.EndDate)
+      @Html.DisplayNameFor(model => model.EndTime)
     </dt>
     <dd class="col-sm-10">
-      @Html.DisplayFor(model => model.EndDate)
+      @Html.DisplayFor(model => model.EndTime.LocalDateTime)
     </dd>
     <dt class="col-sm-2">
       @Html.DisplayNameFor(model => model.Location)

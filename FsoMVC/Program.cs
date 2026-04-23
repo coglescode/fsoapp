@@ -1,24 +1,44 @@
 ﻿using FsoMVC.Data;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Configuration.AddEnvironmentVariables();
+// builder.Services.AddScoped<EventsDataAdaptor>();
+// builder.Services.AddScoped<FsoAppContext>();
 
-var connString =
-  Environment.GetEnvironmentVariable(
-    "ConnectionString"); // ?? throw new InvalidOperationException("Connection string not found.");
+builder.Services.AddControllersWithViews()
+  .AddJsonOptions(options => {
+    // This stops .NET 10 from turning "Subject" into "subject"
+    options.JsonSerializerOptions.PropertyNamingPolicy = null;
+  });
 
-Console.WriteLine($"ConnectionString is: {connString}");
+builder.Services.AddControllers()
+  .AddNewtonsoftJson(options =>
+  {
+    options.SerializerSettings.ContractResolver = new DefaultContractResolver(); // PascalCase
+    options.SerializerSettings.DateFormatHandling = Newtonsoft.Json.DateFormatHandling.MicrosoftDateFormat;
+  });
 
 builder.Services.AddDbContext<FsoAppContext>(options =>
   options.UseNpgsql(Environment.GetEnvironmentVariable("ConnectionString") ??
                     throw new InvalidOperationException("Connection string 'FsoAppDbContext' not found.")));
-
+  
+builder.Services.AddControllers()
+  .AddNewtonsoftJson(options =>
+  {
+    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+  });
 
 var app = builder.Build();
+
+
+//Register Syncfusion license
+var syncfusionLicense = Environment.GetEnvironmentVariable("Syncfusion_License");
+Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(syncfusionLicense);
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

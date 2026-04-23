@@ -13,9 +13,10 @@ public class EventsController(FsoAppContext context) : Controller
   {
     var events = context.Events
       .Include(e => e.MemberRelated)
-      .OrderBy(e => e.StartDate);
-    
+      .OrderBy(e => e.StartTime);
+  
     return View(await events.ToListAsync());
+    
   }
 
   // GET: Events/Details/5
@@ -28,6 +29,7 @@ public class EventsController(FsoAppContext context) : Controller
     return View(currentEvent);
   }
 
+  
   // GET: Events/Create
   public IActionResult Create()
   {
@@ -41,11 +43,13 @@ public class EventsController(FsoAppContext context) : Controller
   // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
   [HttpPost]
   [ValidateAntiForgeryToken]
-  public async Task<IActionResult> Create([Bind("Title,StartDate,EndDate,Location,Description,MemberId")] Event currentEvent)
+  public async Task<IActionResult> Create([Bind("Title,StartTime,EndTime,Location,Description,MemberId")] Event currentEvent)
   {
     if (ModelState.IsValid)
     {
       currentEvent.Id = Guid.NewGuid();
+      currentEvent.StartTime = currentEvent.StartTime.ToUniversalTime();
+      currentEvent.EndTime = currentEvent.EndTime.ToUniversalTime();
       
       context.Add(currentEvent);
       await context.SaveChangesAsync();
@@ -58,17 +62,23 @@ public class EventsController(FsoAppContext context) : Controller
   // GET: Events/Edit/5
   public async Task<IActionResult> Edit(Guid id)
   {
-    ViewData["MemberId"] = new SelectList(context.Members, "Id", "Name");
+    if (id == Guid.Empty)
+    {
+      return   NotFound();
+    } 
     
-    var currenEvent = await context.Events
-      .FindAsync(id);
-      
-    if (currenEvent == null)
+    ViewData["MemberName"] = new SelectList(context.Members, "Id", "Name");
+    
+    var currentEvent = await context.Events.FindAsync(id);
+    if (currentEvent == null)
     {
       return NotFound();
     }
 
-    return View(currenEvent);
+    currentEvent.StartTime = currentEvent.StartTime.LocalDateTime;
+    currentEvent.EndTime = currentEvent.EndTime.LocalDateTime;
+
+    return View(currentEvent);
   }
 
   // POST: Events/Edit/5
@@ -76,14 +86,14 @@ public class EventsController(FsoAppContext context) : Controller
   // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
   [HttpPost]
   [ValidateAntiForgeryToken]
-  public async Task<IActionResult> Edit(Guid? id,[Bind("Id,Title,StartDate,EndDate,Location,Description, MemberId")] Event eventId)
+  public async Task<IActionResult> Edit(Guid? id,[Bind("Id,Title,StartTime,EndTime,Location,Description, MemberId")] Event eventId)
   {
     if (id != eventId.Id)
     {
       return NotFound();
     }
 
-    var eventToUpdate = await context.Events.FirstOrDefaultAsync(m => m.Id == id);
+    // var eventToUpdate = await context.EventData.FirstOrDefaultAsync(m => m.Id == id);
    
     if (ModelState.IsValid)
     {
@@ -93,23 +103,21 @@ public class EventsController(FsoAppContext context) : Controller
         .Where(e => e.Id == id)
           .ExecuteUpdateAsync(e => e
             .SetProperty(b => b.Title, eventId.Title)
-            .SetProperty(b => b.StartDate, eventId.StartDate)
-            .SetProperty(b => b.EndDate, eventId.EndDate)
+            .SetProperty(b => b.StartTime, eventId.StartTime.ToUniversalTime())
+            .SetProperty(b => b.EndTime, eventId.EndTime.ToUniversalTime())
             .SetProperty(b => b.Location, eventId.Location)
             .SetProperty(b => b.Description, eventId.Description)
             .SetProperty(b => b.MemberId, eventId.MemberId)
           );
         
-        await context.SaveChangesAsync();
+        //await context.SaveChangesAsync();
       }
       catch (DbUpdateConcurrencyException)
       {
         if (!EventExists(eventId.Id)) return NotFound();
-
         throw;
       }
-      return RedirectToAction(nameof(Index));
-    }
+      return RedirectToAction(nameof(Index)); }
     return View(eventId);
   }
 
@@ -158,13 +166,13 @@ public class EventsController(FsoAppContext context) : Controller
         {
           e.Id,
           e.Title,
-          e.StartDate,
-          e.EndDate,
+          e.StartTime,
+          e.EndTime,
           e.Location,
           e.Description,
           e.MemberRelated.Name
         })
-        .OrderBy(e => e.StartDate)
+        .OrderBy(e => e.StartTime)
         .ToList();
 
       Console.WriteLine("The events are:" + string.Join(",", events));

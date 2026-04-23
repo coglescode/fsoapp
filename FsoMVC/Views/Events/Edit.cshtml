@@ -17,7 +17,7 @@
       
       <div class="form-group">
         <label asp-for="MemberId" class="control-label">Assigned to: </label>
-        <select asp-for="MemberId" class="form-control" asp-items="ViewBag.MemberId">
+        <select asp-for="MemberId" class="form-control" asp-items="ViewBag.MemberName">
           <option value="">-- Select a Member --</option>
         </select>
         <span asp-validation-for="MemberId" class="text-danger"></span>
@@ -28,14 +28,14 @@
         <span asp-validation-for="Title" class="text-danger"></span>
       </div>
       <div class="form-group">
-        <label asp-for="StartDate" class="control-label"></label>
-        <input asp-for="StartDate" class="form-control"/>
-        <span asp-validation-for="StartDate" class="text-danger"></span>
+        <label asp-for="StartTime" class="control-label"></label>
+        <input asp-for="StartTime" type="datetime-local"  class="form-control"/>
+        <span asp-validation-for="StartTime" class="text-danger"></span>
       </div>
       <div class="form-group">
-        <label asp-for="EndDate" class="control-label"></label>
-        <input asp-for="EndDate" class="form-control"/>
-        <span asp-validation-for="EndDate" class="text-danger"></span>
+        <label asp-for="EndTime" class="control-label"></label>
+        <input asp-for="EndTime" type="datetime-local" class="form-control"/>
+        <span asp-validation-for="EndTime" class="text-danger"></span>
       </div>
       <div class="form-group">
         <label asp-for="Location" class="control-label"></label>

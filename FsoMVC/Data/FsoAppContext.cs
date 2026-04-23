@@ -1,6 +1,7 @@
 ﻿using FsoMVC.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Microsoft.EntityFrameworkCore.Metadata;
+
 
 namespace FsoMVC.Data;
 
@@ -11,6 +12,7 @@ public class FsoAppContext(DbContextOptions options) : DbContext(options)
 
   public DbSet<Member> Members { get; set; }
   public DbSet<Event> Events { get; set; } // Uncomment if you have an Event model
+  
   public DbSet<SerialNumber> SerialNumbers { get; set; }
 
 
@@ -23,7 +25,7 @@ public class FsoAppContext(DbContextOptions options) : DbContext(options)
       member.HasKey(p => p.Id).HasName("PK_MemberId");
       
       member.HasMany(e => e.Events)
-            .WithOne(m => m.MemberRelated)
+            .WithOne(m => m.MemberRelated)//.ToString()
             .HasForeignKey(e => e.MemberId)
             .IsRequired();
       
@@ -42,16 +44,23 @@ public class FsoAppContext(DbContextOptions options) : DbContext(options)
       //      .HasForeignKey<SerialNumber>(m => m.MemberId)
       //      .IsRequired();
 
-      e.Property(p => p.StartDate)
-       .HasColumnType("date");
-      
-      e.Property(p => p.EndDate)
-       .HasColumnType("date"); // Modified to use date type
-      
-      // e.Property(n => n.Title)
-      //   .IsRequired()
-      //   .HasMaxLength(100);
+      e.Property(p => p.StartTime)
+        .HasColumnType("timestamp with time zone");
+        //.HasConversion<DateTimeOffset>();
+        //.HasDefaultValueSql("CURRENT_TIMESTAMP");
+        //.HasDefaultValueSql("getdate()")
+        //.DataType(DateTimeOffset.UtcNow)
+        //.ValueGeneratedOnAdd();
+
+      e.Property(p => p.EndTime)
+        .HasColumnType("timestamp with time zone");
+        //.ValueGeneratedOnAdd(); // Modified to use date type
+
+        // e.Property(n => n.Title)
+        //   .IsRequired()
+        //   .HasMaxLength(100);
     });
+    
 
     // modelBuilder.Entity<SerialNumber>(serialNumber =>
     // {
