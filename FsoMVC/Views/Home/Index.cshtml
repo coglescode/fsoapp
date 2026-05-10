@@ -6,10 +6,10 @@
 
 @(Html.EJS().Schedule("schedule")
     .Height("550px")
-    .Views(view => {
-      view.Option(View.TimelineMonth).Add();
-      view.Orientation(Orientation.Vertical);
-    })
+    // .Views(view => {
+    //   view.Option(View.TimelineMonth).Add();
+    //   view.Orientation(Orientation.Vertical);
+    // })
     .EventSettings(e => e
       .DataSource(d => d
         .Url(Url.Action("GetData", "Schedule"))           // Read
