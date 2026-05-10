@@ -61,6 +61,5 @@ services:
       PGADMIN_DEFAULT_PASSWORD: ${YOUR_PASSWORD}
 
 networks:
-  fsoapp_network:
-    driver: bridge
+  dokploy-network:
     external: true
