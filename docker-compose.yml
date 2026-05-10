@@ -11,7 +11,7 @@ services:
     #shm_size: 128mb
     # or set shared memory limit when deploy via swarm stack
     networks:
-      - fsoapp_network
+      - dokploy-network
     #ports:
     #  - 5433:5432
     volumes:
@@ -24,8 +24,7 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       PGDATA: ${PGDATA}
-      #   POSTGRES_DB: fsoApp
-  
+      #   POSTGRES_DB: fsoApp  
   
   web:
     #build: .
@@ -33,7 +32,7 @@ services:
     container_name: fsomvc
     restart: always
     networks:
-      - fsoapp_network
+      - dokploy-network
     ports:
       - 8082:8080
     #env_file:
