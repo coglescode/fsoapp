@@ -33,8 +33,8 @@ services:
     restart: always
     networks:
       - dokploy-network
-    ports:
-      - 8082:8080
+    expose:
+      - 8080
     #env_file:
     #  - .env
     environment:
