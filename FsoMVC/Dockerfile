@@ -20,7 +20,7 @@ WORKDIR "/src"
 #RUN ls -R
 RUN dotnet build "FsoMVC.csproj" -c $BUILD_CONFIGURATION -o /app/build
 RUN dotnet tool install --global dotnet-ef
-RUN dotnet ef migrations bundle
+# RUN dotnet ef migrations bundle
 # ENV PATH="$PATH:/root/.dotnet/tools"
 RUN dotnet ef migrations bundle --self-contained -r linux-x64 -o /app/publish/migrate
 
