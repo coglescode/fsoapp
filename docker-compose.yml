@@ -27,7 +27,7 @@ services:
       #   POSTGRES_DB: fsoApp  
   
   web:
-    build: . 
+    build: ./FsoMVC 
     image: coglescode/fsomvc:main
     container_name: fsomvc
     restart: always
