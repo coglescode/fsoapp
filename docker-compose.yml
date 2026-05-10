@@ -27,14 +27,14 @@ services:
       #   POSTGRES_DB: fsoApp  
   
   web:
-    #build: .
+    build: .
     image: coglescode/fsomvc:main
     container_name: fsomvc
     restart: always
     networks:
       - dokploy-network
-    ports:
-      - 8082:8080
+    expose:
+      - 8080
     #env_file:
     #  - .env
     environment:
